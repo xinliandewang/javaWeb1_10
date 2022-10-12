@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>会员注册页面</title>
-<link type="text/css" rel="stylesheet" href="../../static/css/style.css" >
+<link rel="stylesheet" th:href="@{static/css/style.css}" >
 <style type="text/css">
 	h1 {
 		text-align: center;
@@ -17,21 +17,21 @@
 </head>
 <body>
 		<div id="header">
-				<a href="../../index.html">
-					<img class="logo_img" alt="" src="../../static/img/logo.gif" />
+				<a th:href="@{book(method='indexHTML')}">
+					<img class="logo_img" alt="" th:src="@{static/img/logo.gif}" />
 				</a>
 				<span class="wel_word"></span>
 				<div>
 					<span>欢迎<span class="um_span">会员</span>光临Deer书城</span>
 					<a href="../order/order.html">我的订单</a>
-					<a href="../../index.html">注销</a>&nbsp;&nbsp;
-					<a href="../../index.html">返回</a>
+					<a href="@{book(method='indexHTML')}">注销</a>&nbsp;&nbsp;
+					<a href="@{book(method='indexHTML')}">返回</a>
 				</div>
 		</div>
 		
 		<div id="main">
 		
-			<h1>注册成功! <a href="../../index.html">转到主页</a></h1>
+			<h1>注册成功! <a th:href="@{book(method='indexHTML')}">转到主页</a></h1>
 	
 		</div>
 		
