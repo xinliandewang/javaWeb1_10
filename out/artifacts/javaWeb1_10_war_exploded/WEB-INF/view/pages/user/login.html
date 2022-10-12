@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>网上书店登录页面</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        height: 100%;
+      }
+      body {
+        height: 100%;
+      }
+      .container {
+        height: 800px;
+        position: relative;
+        background-image: linear-gradient(to right, #fbc2eb, #a6c1ee);
+      }
+      .login_left{
+        width: 350px;
+        height: 350px;
+        position: absolute;
+        left: 25%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+      .login-wrapper {
+        background-color: #fff;
+        width: 358px;
+        height: 588px;
+        border-radius: 15px;
+        padding: 0 50px;
+        position: absolute;
+        left: 65%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+      .header {
+        font-size: 38px;
+        font-weight: bold;
+        text-align: center;
+        line-height: 200px;
+      }
+      .input-item {
+        display: block;
+        width: 100%;
+        margin-bottom: 20px;
+        border: 0;
+        padding: 10px;
+        border-bottom: 1px solid rgb(128, 125, 125);
+        font-size: 15px;
+        outline: none;
+      }
+      .input-item,placeholder {
+        text-transform: uppercase;
+      }
+      .btn {
+        text-align: center;
+        padding: 10px;
+        width: 100%;
+        margin-top: 40px;
+        background-image: linear-gradient(to right, #a6c1ee, #fbc2eb);
+        color: #fff;
+        border: 1px solid #cccccc;
+      }
+      .msg {
+        text-align: center;
+        line-height: 88px;
+      }
+      a {
+        text-decoration-line: none;
+        color: #abc1ee;
+      }
+      #head_div{
+        width: 1200px;
+        height: 82px;
+        margin: 0px auto;
+      }
+      #head_div>img{
+        height: 82px;
+      }
+    </style>
+  </head>
+  <body>
+  <div id="head">
+      <div id="head_div">
+<!--        <img src="../../../../static/img/logo.gif" alt="">-->
+        <img th:src="@{static/img/logo.gif}" alt="">
+      </div>
+  </div>
+  <div class="container">
+<!--      <img class="login_left" src="../../../../static/img/logLeft.png" alt="">-->
+      <img class="login_left" th:src="@{static/img/logLeft.png}" alt="">
+    <div class="login-wrapper">
+      <div class="header">会员登录入口</div>
+      <form action="#">
+        <div class="form-wrapper">
+          <input type="text" name="username" placeholder="username" class="input-item">
+          <input type="password" name="password" placeholder="password" class="input-item">
+          <input class="btn" type="submit" value="Login">
+        </div>
+      </form>
+      <div class="msg">
+        Don't have account?
+        <a href="#">Sign up</a>
+      </div>
+    </div>
+  </div>
+  </body>
+</html>
