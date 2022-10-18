@@ -90,7 +90,7 @@ public class ShowBookServlet extends ViewBaseServlet {
     }
     // 通过姓名查询信息
     protected void findByNameServlet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String username = req.getParameter("username1");
+        String username = req.getParameter("username");
         System.out.println(username);
         Integer byName = loginService.findByName(username);
         System.out.println(byName);
