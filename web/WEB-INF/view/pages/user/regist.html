@@ -3,14 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <title>会员注册页面</title>
-<!--    <link type="text/css" rel="stylesheet" href="../../static/css/style.css" />-->
-<!--    <link rel="stylesheet" href="../../static/css/register.css" />-->
     <link rel="stylesheet" th:href="@{static/css/style.css}" />
     <link rel="stylesheet" th:href="@{static/css/register.css}" />
+    <script th:src="@{static/script/axios.js}"></script>
     <style type="text/css">
       .login_form {
         height: 420px;
         margin-top: 25px;
+      }
+      #checkCode{
+        width: 100px;
+        height: 44px;
+        justify-content: space-around;
       }
     </style>
   </head>
@@ -28,28 +32,28 @@
           <div class="form-item">
             <div>
               <label>用户名称:</label>
-              <input type="text" placeholder="请输入用户名" />
+              <input type="text" placeholder="请输入用户名" name="username1"/>
             </div>
             <span class="errMess">用户名应为6~16位数组和字母组成</span>
           </div>
           <div class="form-item">
             <div>
               <label>用户密码:</label>
-              <input type="password" placeholder="请输入密码" />
+              <input type="password" placeholder="请输入密码" name="password"/>
             </div>
             <span class="errMess">密码的长度至少为8位</span>
           </div>
           <div class="form-item">
             <div>
               <label>确认密码:</label>
-              <input type="password" placeholder="请输入确认密码" />
+              <input type="password" placeholder="请输入确认密码" name="retpassword"/>
             </div>
             <span class="errMess">密码两次输入不一致</span>
           </div>
           <div class="form-item">
             <div>
               <label>用户邮箱:</label>
-              <input type="text" placeholder="请输入邮箱" />
+              <input type="text" placeholder="请输入邮箱" name="email"/>
             </div>
             <span class="errMess">请输入正确的邮箱格式</span>
           </div>
@@ -58,7 +62,7 @@
               <label>验证码:</label>
               <div class="verify">
                 <input type="text" placeholder="" />
-                <img src="../../static/img/code.bmp" alt="" />
+                <div class="code" id="checkCode" onclick="createCode()" ></div>
               </div>
             </div>
             <span class="errMess">请输入正确的验证码</span>
@@ -73,4 +77,125 @@
       </span>
     </div>
   </body>
+  <script>
+    // 正则表达式
+    var user = /^[a-zA-Z0-9_-]{6,16}$/;
+    var pass = /^[0-9a-zA-Z]{8,}$/;
+    var email = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+    var arr = [user,pass,/^$/,email];
+    var sub = document.querySelector(".btn");
+    var oInput = document.querySelectorAll("input");
+    var oErrMess = document.querySelectorAll(".errMess");
+    sub.onclick = function (ev) {
+      if (oInput[0].value == false || oInput[0].value == null){
+        ev.preventDefault();
+      }
+      if (oInput[1].value == false || oInput[1].value == null){
+        ev.preventDefault();
+      }
+      if (oInput[2].value == false || oInput[2].value == null){
+        ev.preventDefault();
+      }
+      if (oInput[3].value == false || oInput[3].value == null){
+        ev.preventDefault();
+      }
+      if (oInput[4].value == false || oInput[4].value == null || oInput[4].value.toLowerCase() != code.toLowerCase()){
+        ev.preventDefault();
+      }
+    }
+
+    for (let i = 0; i < oInput.length-2; i++) {
+      (function (j) {
+        oInput[j].onblur = function (e) {
+          if (oInput[j].value != '' && arr[j].test(oInput[j].value) ){
+            console.log(j + "有数据")
+            oErrMess[j].style.visibility = "hidden";
+          }else {
+            oErrMess[j].style.visibility = "visible";
+            e.preventDefault();
+          }
+          if(j == 0){
+            var username = oInput[0].value
+            console.log(username)
+            var url = "/javaWeb1_10/book?method=findByNameServlet&byName=" + username;
+            axios.post(url).then(resp => {
+              if(resp.data > 0){
+
+                alert("账号不可用");
+              }else {
+                alert("账号可用");
+              }
+            }).catch(err => {
+              console.log(err)
+            })
+          }
+          if(j == 2){
+            if (oInput[j].value == false || oInput[j].value != oInput[j-1].value){
+              oErrMess[j].style.visibility = "visible";
+            }else {
+              oErrMess[j].style.visibility = "hidden";
+            }
+          }
+
+        }
+      })(i);
+
+    }
+    function getRandom(n,m){
+      return Math.floor(Math.random() * (m-n)+n);
+    }
+    var code = "";  //定义一个变量，用来保存验证码
+    var checkCode = document.getElementById("checkCode");
+    var codeChars = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+              'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
+              'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'); //所有候选组成验证码的字符，当然也可以用中文的
+    // 直接先生产一个随机6位数 显示在网页上
+    var oCheckCode= document.querySelector("#checkCode");
+    // for(var i = 0; i < 6; i++) {
+    //   var charNum = Math.floor(Math.random() * codeChars.length);
+    //   code += codeChars[charNum];
+    // }
+    for(var i=0;i<6;i++){
+      var span = document.createElement('span');
+      span.innerHTML = codeChars[getRandom(0,codeChars.length-1)]; //生成随机数，并取得对应值
+      span.style.display = "inline-block";
+      span.style.fontSize = getRandom(16,24)+"px";  //随机字体大小
+      span.style.color = 'rgb('+getRandom(0,200)+','+getRandom(0,200)+','+getRandom(0,200)+')';  //随机字体颜色
+      span.style.transform = 'translate('+getRandom(-5,5)+'px,'+getRandom(-5,5)+'px) rotate('+getRandom(-20,20)+'deg)'; //随机平移旋转
+      code += span.innerHTML; //将str拼接，和input值对比
+      oCheckCode.appendChild(span);
+    }
+
+    //生成验证码
+    function createCode() {
+      code = "";
+      while (oCheckCode.hasChildNodes()){
+        oCheckCode.removeChild(oCheckCode.firstChild);
+      }
+      for(var i=0;i<6;i++){
+        var span = document.createElement('span');
+        span.innerHTML = codeChars[getRandom(0,codeChars.length-1)]; //生成随机数，并取得对应值
+        span.style.display = "inline-block";
+        span.style.fontSize = getRandom(16,24)+"px";  //随机字体大小
+        span.style.color = 'rgb('+getRandom(0,200)+','+getRandom(0,200)+','+getRandom(0,200)+')';  //随机字体颜色
+        span.style.transform = 'translate('+getRandom(-5,5)+'px,'+getRandom(-5,5)+'px) rotate('+getRandom(-20,20)+'deg)'; //随机平移旋转
+        code += span.innerHTML; //将str拼接，和input值对比
+        oCheckCode.appendChild(span);
+      }
+
+    }
+
+    console.log(code)
+    // 判断验证码是否正确或者是空的
+    oInput[4].onblur = function (e) {
+      console.log(code)
+       var a = oInput[4].value
+      if (a.toLowerCase() == code.toLowerCase()){
+        oErrMess[4].style.visibility = "hidden";
+      }else{
+        oErrMess[4].style.visibility = "visible";
+      }
+    }
+
+  </script>
 </html>

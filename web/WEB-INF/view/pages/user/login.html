@@ -54,9 +54,9 @@
         font-size: 15px;
         outline: none;
       }
-      .input-item,placeholder {
-        text-transform: uppercase;
-      }
+      /*.input-item,placeholder {*/
+      /*  text-transform: uppercase;*/
+      /*}*/
       .btn {
         text-align: center;
         padding: 10px;
@@ -87,27 +87,45 @@
   <body>
   <div id="head">
       <div id="head_div">
-<!--        <img src="../../../../static/img/logo.gif" alt="">-->
         <img th:src="@{static/img/logo.gif}" alt="">
       </div>
   </div>
   <div class="container">
-<!--      <img class="login_left" src="../../../../static/img/logLeft.png" alt="">-->
       <img class="login_left" th:src="@{static/img/logLeft.png}" alt="">
     <div class="login-wrapper">
       <div class="header">会员登录入口</div>
-      <form action="#">
+
+      <form th:action="@{/book(method='loginsuccessHTML')}" method="post">
         <div class="form-wrapper">
           <input type="text" name="username" placeholder="username" class="input-item">
           <input type="password" name="password" placeholder="password" class="input-item">
+          <input type="hidden" name="hid" th:value="${ps}">
           <input class="btn" type="submit" value="Login">
         </div>
       </form>
+
       <div class="msg">
         Don't have account?
-        <a href="#">Sign up</a>
+        <a th:href="@{/book(method='registerHTML')}">Sign up</a>
       </div>
     </div>
   </div>
   </body>
+  <script>
+    // 获取登录按钮
+    var sub = document.querySelector(".btn");
+    var hid = document.querySelector("[name='hid']");
+    // 获取账号
+    var oUser = document.querySelector("[name='username']");
+    // 获取密码
+    var oPass = document.querySelector("[name='password']");
+
+    sub.onclick = function () {
+      if (oUser.value == false){
+        alert("账号不能为空")
+      }else if(oPass.value == false){
+        alert("密码不能为空")
+      }
+    }
+  </script>
 </html>

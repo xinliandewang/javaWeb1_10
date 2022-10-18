@@ -32,5 +32,13 @@
         <servlet-name>showBook</servlet-name>
         <url-pattern>/book</url-pattern>
     </servlet-mapping>
-
+            <!--    过滤器-->
+    <filter>
+        <filter-name>Myfilter</filter-name>
+        <filter-class>filter.MyFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>Myfilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 </web-app>
